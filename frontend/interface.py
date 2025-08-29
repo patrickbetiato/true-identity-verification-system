@@ -47,7 +47,7 @@ col1, col2, col3 = st.columns([1, 2, 1])
 
 st.markdown("<h1 style='text-align: center;'>true-identity-verification-system</h1>", unsafe_allow_html=True)
 with col2:
-    st.image("/home/patrick/Documentos/Proj_Detector/data/iconm.png", width=200)
+    st.image("../data/iconm.png", width=200)
     
 
 perfil_link = st.text_input("Insira o link do perfil:",
