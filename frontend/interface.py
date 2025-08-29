@@ -16,6 +16,12 @@ st.markdown("""
         -webkit-text-fill-color: transparent;
         display: inline-block;
     }
+            
+        .stSidebar {
+        width: 350px !important;
+        min-width: 350px !important;
+    
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -24,12 +30,24 @@ st.markdown("<h1>true-identity-verification-system</h1>", unsafe_allow_html=True
 
 perfil_link = st.text_input("Insira o link do perfil:")
 
-st.sidebar.title("Verificador De Perfis")
-st.sidebar.write("""
-- Aqui será feito uma descrição do que é feito e como ele opera.
-- Insira o link do perfil.
-- Clique em *Analisar*.
-- Veja os dados do perfil.
+st.sidebar.title("Verificador de Perfis")
+st.sidebar.markdown("""
+💡 **O que é este sistema:**  
+O True Identity Verification System analisa perfis públicos do Instagram e estima a probabilidade de serem **fakes** ou gerados por IA.
+
+🛠 **Como usar:**  
+1. Insira o link do perfil que deseja analisar.  
+2. Clique no botão **Analisar**.  
+3. Veja os dados do perfil e a estimativa de confiabilidade.
+
+⚠️ **Aviso:**  
+- Apenas perfis públicos podem ser analisados.  
+- As estimativas iniciais ainda não usam aprendizado de máquina completo.
+
+📊 **Futuras atualizações:**  
+- Adição de análise avançada via ML.  
+- Relatórios gráficos de confiabilidade.  
+- Hospedagem online para uso imediato.
 """)
 
 BACKEND_URL = "http://127.0.0.1:8000/analyze/"
