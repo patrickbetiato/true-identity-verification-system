@@ -1,6 +1,7 @@
 import streamlit as st
-import requests
+import os
 
+img_path = os.path.join(os.path.dirname(__file__), "../data/iconm.png")
 
 st.markdown("""
     <a href="https://github.com/patrickbetiato/true-identity-verification-system" target="_blank">
@@ -16,10 +17,6 @@ st.markdown("""
 
 st.markdown("""
     <style>
-    
-
-
-            
     body { background-color: #121212; color: #FFFFFF; }
     .stButton>button { background-color: #2B2B2B; color: white; border-radius: 10px; }
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
@@ -33,6 +30,7 @@ st.markdown("""
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         display: inline-block;
+        text-align: center;
     }
             
     .stSidebar {
@@ -43,11 +41,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns([1, 2, 1])
-
-
-st.markdown("<h1 style='text-align: center;'>true-identity-verification-system</h1>", unsafe_allow_html=True)
+st.markdown("<h1>true-identity-verification-system</h1>", unsafe_allow_html=True)
 with col2:
-    st.image("../data/iconm.png", width=200)
+    st.image(img_path, width=200)
+
+
     
 
 perfil_link = st.text_input("Insira o link do perfil:",
