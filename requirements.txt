@@ -4,8 +4,10 @@ uvicorn
 instaloader
 joblib
 numpy
+scikit-learn
 
 # Frontend
 streamlit
 requests
 matplotlib
+
