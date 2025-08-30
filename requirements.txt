@@ -1,0 +1,11 @@
+# Backend
+fastapi
+uvicorn
+instaloader
+joblib
+numpy
+
+# Frontend
+streamlit
+requests
+matplotlib
