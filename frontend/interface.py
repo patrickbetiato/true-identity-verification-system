@@ -1,5 +1,7 @@
+import requests
 import streamlit as st
 import os
+import matplotlib.pyplot as plt
 
 img_path = os.path.join(os.path.dirname(__file__), "../data/iconm.png")
 
@@ -45,32 +47,43 @@ st.markdown("<h1>true-identity-verification-system</h1>", unsafe_allow_html=True
 with col2:
     st.image(img_path, width=200)
 
-
-    
-
 perfil_link = st.text_input("Insira o link do perfil:",
   placeholder="Digite o nome de usuário, exemplo: 'patrickbetiato'")
 
 st.sidebar.title("Verificador de Perfis")
+
 st.sidebar.markdown("""
-💡 **O que é este sistema:**  
-O True Identity Verification System analisa perfis públicos do Instagram e estima a probabilidade de serem **fakes** ou gerados por IA.
+💡 **Sobre o sistema:**  
+O True Identity Verification System analisa perfis públicos do Instagram e fornece uma **estimativa de confiabilidade** baseada em métricas públicas do perfil. Ele utiliza informações como número de seguidores, seguindo, posts, bio, conta verificada e privada para estimar a probabilidade de o perfil ser **real ou falso**.
 
 🛠 **Como usar:**  
 1. Insira o link do perfil que deseja analisar.  
 2. Clique no botão **Analisar**.  
-3. Veja os dados do perfil e a estimativa de confiabilidade.
+3. Veja os dados do perfil na tela principal e a estimativa de confiabilidade no gráfico lateral.
 
-⚠️ **Aviso:**  
-- Apenas perfis públicos podem ser analisados.  
-- As estimativas iniciais ainda não usam aprendizado de máquina completo.
+📊 **Interpretação do gráfico:**  
+- **Barras horizontais:** representam a porcentagem de confiabilidade do perfil.  
+- **Cor verde ("Real")**: indica a probabilidade do perfil ser verdadeiro.  
+- **Cor vermelha ("Fake")**: indica a probabilidade do perfil ser falso ou suspeito.  
+- Quanto maior a barra verde, mais confiável o perfil parece ser.
 
-📊 **Futuras atualizações:**  
-- Adição de análise avançada via ML.  
-- Relatórios gráficos de confiabilidade.  
-- Hospedagem online para uso imediato.
+⚠️ **Avisos importantes:**  
+- Apenas **perfis públicos** podem ser analisados.  
+- O modelo utiliza apenas **dados disponíveis publicamente**; não acessa mensagens privadas ou seguidores ocultos.  
+- É uma **estimativa**, não uma certificação oficial; perfis suspeitos podem ainda ser reais.
+
+🔎 **Detalhes sobre as métricas:**  
+- **Seguidores:** quantidade de pessoas que seguem o perfil.  
+- **Seguindo:** quantidade de pessoas que o perfil segue.  
+- **Posts:** quantidade de publicações no perfil.  
+- **Bio:** tamanho do texto da biografia, usado como uma métrica de autenticidade.  
+- **Verificado:** contas com selo azul são consideradas mais confiáveis.  
+- **Privado:** contas privadas têm dados limitados para análise.
+
+📌 **Uso responsável:**  
+- Este sistema é apenas para **avaliação informativa**.  
+- Não compartilhe resultados para assediar ou prejudicar outros usuários.
 """)
-
 BACKEND_URL = "http://127.0.0.1:8000/analyze/"
 
 if st.button("Analisar"):
@@ -86,19 +99,64 @@ if st.button("Analisar"):
 
                     st.write("---")
                     st.subheader(f"👤 @{data['username']}")
-                    st.write(f"**Nome:** {data['full_name']}")
-                    st.write(f"**Bio:** {data['bio']}")
-                    st.write(f"**Seguidores:** {data['followers']}")
-                    st.write(f"**Seguindo:** {data['following']}")
-                    st.write(f"**Posts:** {data['posts']}")
-                    st.write(f"**Verificado:** {'✅ Sim' if data['is_verified'] else '❌ Não'}")
-                    st.write(f"**Privado:** {'🔒 Sim' if data['is_private'] else '🌍 Não'}")
+
+                    col1, col2 = st.columns([2, 1])
+
+                    with col1:
+                        st.write(f"**Nome:** {data['full_name']}")
+                        st.write(f"**Bio:** {data['bio']}")
+                        st.write(f"**Seguidores:** {data['followers']}")
+                        st.write(f"**Seguindo:** {data['following']}")
+                        st.write(f"**Posts:** {data['posts']}")
+                        st.write(f"**Verificado:** {'✅ Sim' if data['is_verified'] else '❌ Não'}")
+                        st.write(f"**Privado:** {'🔒 Sim' if data['is_private'] else '🌍 Não'}")
+
+                    prediction = data.get("prediction", None)
+                    prob = data.get("probability", None)
+
+                    with col2:
+                        if prediction is not None and prob is not None:
+                            prob_real = prob if prediction == 0 else 1 - prob
+                            prob_fake = 1 - prob_real
+
+                            st.write("### 🔮 Confiabilidade")
+
+                            fig, ax = plt.subplots(figsize=(3, 2), facecolor="none")
+                            bars = ax.barh(
+                                ["Real", "Fake"],
+                                [prob_real * 100, prob_fake * 100],
+                                color=["#4CAF50", "#F44336"],
+                                height=0.6
+                            )
+
+                            ax.set_xlim(0, 100)
+                            ax.set_facecolor("none")
+                            ax.spines["top"].set_visible(False)
+                            ax.spines["right"].set_visible(False)
+                            ax.spines["left"].set_visible(False)
+                            ax.spines["bottom"].set_visible(False)
+                            ax.tick_params(left=False, bottom=False, labelsize=10, colors="white")
+                            ax.set_yticklabels(["Real", "Fake"], color="white", fontsize=10)
+
+                            for bar in bars:
+                                width = bar.get_width()
+                                ax.text(
+                                    width + 1, bar.get_y() + bar.get_height() / 2,
+                                    f"{width:.1f}%",
+                                    va="center", ha="left", fontsize=10, color="white"
+                                )
+
+                            plt.tight_layout()
+                            st.pyplot(fig, transparent=True)
+
+                        else:
+                            st.warning("O modelo não retornou probabilidade de classificação.")
 
                 else:
                     st.error(f"Erro na análise. Código: {response.status_code}")
 
-            except requests.exceptions.ConnectionError:
-                st.error("Falha na conexão. Verifique se o backend está rodando.")
+            except requests.exceptions.RequestException as e:
+                st.error(f"Erro na conexão com o backend: {e}")
             except Exception as e:
                 st.error(f"Erro inesperado: {e}")
     else:
