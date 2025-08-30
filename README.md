@@ -2,7 +2,10 @@
 
 Uma aplicação em Python que utiliza **Streamlit** e **Instaloader** para analisar perfis do Instagram e estimar a probabilidade de serem **fakes ou gerados por IA**.
 
-> ⚠️ Projeto em desenvolvimento: a parte de **aprendizado de máquina** ainda será implementada para análise avançada.
+# Pode ser acessado em: https://true-identity-verification-system-ritcmhwq95gvupk87nxiem.streamlit.app/
+
+<img width="1150" height="510" alt="image" src="https://github.com/user-attachments/assets/f1ae60c0-f592-4bfd-af22-161b69e4ff2b" />
+
 
 ---
 
@@ -11,7 +14,6 @@ Uma aplicação em Python que utiliza **Streamlit** e **Instaloader** para anali
 * Interface interativa com Streamlit.
 * Análise de perfis públicos do Instagram via Instaloader.
 * Sistema inicial de detecção de perfis suspeitos.
-* Exportação e visualização de dados (CSV).
 
 ---
 
@@ -63,15 +65,7 @@ streamlit run frontend/interface.py
 
 * Digite o nome de usuário do Instagram na interface.
 * O sistema irá coletar dados do perfil (publicamente disponíveis) e indicar **uma estimativa inicial de probabilidade de ser fake**.
-* Futuras versões incluirão **modelos de aprendizado de máquina** para análise mais precisa.
-
----
-
-## Próximos passos
-
-* Implementar algoritmo de **detecção via aprendizado de máquina**.
-* Adicionar métricas de confiabilidade e relatórios gráficos.
-* Hospedar a aplicação na nuvem.
+* Análise com aprendizado de máquina para análise mais precisa.
 
 ---
 
