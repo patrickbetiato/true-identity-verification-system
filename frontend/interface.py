@@ -118,8 +118,8 @@ if st.button("Analisar"):
                         st.write(f"**Verificado:** {'✅ Sim' if data['is_verified'] else '❌ Não'}")
                         st.write(f"**Privado:** {'🔒 Sim' if data['is_private'] else '🌍 Não'}")
 
-                    prediction = data.get("prediction", None)
-                    prob = data.get("probability", None)
+                    prediction = data.get("prediction")
+                    prob = data.get("probability")
 
                     with col2:
                         if prediction is not None and prob is not None:
@@ -166,5 +166,3 @@ if st.button("Analisar"):
                 st.error(f"Erro na conexão com o backend: {e}")
             except Exception as e:
                 st.error(f"Erro inesperado: {e}")
-    else:
-        st.warning("Por favor, insira um link de perfil para analisar.")
