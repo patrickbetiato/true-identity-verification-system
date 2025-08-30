@@ -84,14 +84,21 @@ O True Identity Verification System analisa perfis públicos do Instagram e forn
 - Este sistema é apenas para **avaliação informativa**.  
 - Não compartilhe resultados para assediar ou prejudicar outros usuários.
 """)
+
+logged_in = st.checkbox("Estou logado no Instagram e posso acessar o perfil público")
+
 BACKEND_URL = "https://true-identity-verification-system.onrender.com/analyze/"
 
 if st.button("Analisar"):
-    if perfil_link:
-        with st.spinner(' Buscando dados do perfil...'):
+    if not logged_in:
+        st.warning("Por favor, conecte-se ao Instagram antes de analisar.")
+    elif not perfil_link:
+        st.warning("Por favor, insira um link de perfil para analisar.")
+    else:
+        with st.spinner('Buscando dados do perfil...'):
             try:
                 payload = {"profile_link": perfil_link}
-                response = requests.post(BACKEND_URL, json=payload, timeout=20)
+                response = requests.post(BACKEND_URL, json=payload, timeout=60)
 
                 if response.status_code == 200:
                     data = response.json()
