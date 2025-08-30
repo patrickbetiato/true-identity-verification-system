@@ -84,7 +84,7 @@ O True Identity Verification System analisa perfis públicos do Instagram e forn
 - Este sistema é apenas para **avaliação informativa**.  
 - Não compartilhe resultados para assediar ou prejudicar outros usuários.
 """)
-BACKEND_URL = "http://127.0.0.1:8000/analyze/"
+BACKEND_URL = "https://true-identity-verification-system.onrender.com/analyze/"
 
 if st.button("Analisar"):
     if perfil_link:
